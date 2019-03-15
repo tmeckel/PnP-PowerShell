@@ -74,10 +74,9 @@ Online site collection fails if a deleted site with the same URL exists in the R
         [Parameter(Mandatory = false, HelpMessage = @"Specifies the warning level for the storage quota in megabytes. This value must not exceed the values set for the StorageQuota parameter")]
         public long StorageQuotaWarningLevel = 100;
 
-#if !ONPREMISES
         [Parameter(Mandatory = false, HelpMessage = "Specifies if any existing site with the same URL should be removed from the recycle bin")]
         public SwitchParameter RemoveDeletedSite;
-#endif
+
         [Parameter(Mandatory = false)]
         public SwitchParameter Wait;
 
@@ -98,20 +97,6 @@ Online site collection fails if a deleted site with the same URL exists in the R
             }
             if (shouldContinue)
             {
-#if ONPREMISES
-                var entity = new SiteEntity();
-                entity.Url = Url;
-                entity.Title = Title;
-                entity.SiteOwnerLogin = Owner;
-                entity.Template = Template;
-                entity.StorageMaximumLevel = StorageQuota;
-                entity.StorageWarningLevel = StorageQuotaWarningLevel;
-                entity.TimeZoneId = TimeZone;
-                entity.UserCodeMaximumLevel = ResourceQuota;
-                entity.UserCodeWarningLevel = ResourceQuotaWarningLevel;
-                entity.Lcid = Lcid;
-                Tenant.CreateSiteCollection(entity);
-#else
                 Func<TenantOperationMessage, bool> timeoutFunction = TimeoutFunction;
 
 #pragma warning disable CS0618 // Type or member is obsolete
@@ -123,13 +108,11 @@ Online site collection fails if a deleted site with the same URL exists in the R
                 }
 
                 Tenant.CreateSiteCollection(Url, Title, Owner, Template, (int)StorageQuota,
-                    (int)StorageQuotaWarningLevel, TimeZone, (int)ResourceQuota, (int)ResourceQuotaWarningLevel, Lcid,
+                      (int)StorageQuotaWarningLevel, TimeZone, (int)ResourceQuota, (int)ResourceQuotaWarningLevel, Lcid,
                     RemoveDeletedSite, Wait, Wait == true ? timeoutFunction : null);
-#endif
             }
         }
 
-#if !ONPREMISES
         private bool TimeoutFunction(TenantOperationMessage message)
         {
             if (message == TenantOperationMessage.CreatingSiteCollection)
@@ -138,6 +121,5 @@ Online site collection fails if a deleted site with the same URL exists in the R
             }
             return Stopping;
         }
-#endif
     }
 }

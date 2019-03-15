@@ -1,4 +1,3 @@
-﻿#if !ONPREMISES
 using Microsoft.Online.SharePoint.TenantAdministration;
 using Microsoft.Online.SharePoint.TenantManagement;
 using Microsoft.SharePoint.Client;
@@ -14,18 +13,9 @@ namespace SharePointPnP.PowerShell.Commands.Model
     {
         public SPOTenant(Tenant tenant)
         {
+#if !ONPREMISES
             this.hideDefaultThemes = tenant.HideDefaultThemes;
-            this.storageQuota = tenant.StorageQuota;
-            this.storageQuotaAllocated = tenant.StorageQuotaAllocated;
-            this.resourceQuota = tenant.ResourceQuota;
-            this.resourceQuotaAllocated = tenant.ResourceQuotaAllocated;
             this.oneDriveStorageQuota = tenant.OneDriveStorageQuota;
-            this.compatibilityRange = tenant.CompatibilityRange;
-            this.externalServicesEnabled = tenant.ExternalServicesEnabled;
-            this.noAccessRedirectUrl = tenant.NoAccessRedirectUrl;
-            this.sharingCapability = tenant.SharingCapability;
-            this.displayStartASiteOption = tenant.DisplayStartASiteOption;
-            this.startASiteFormUrl = tenant.StartASiteFormUrl;
             this.showEveryoneClaim = tenant.ShowEveryoneClaim;
             this.showAllUsersClaim = tenant.ShowAllUsersClaim;
             this.officeClientADALDisabled = tenant.OfficeClientADALDisabled;
@@ -339,6 +329,17 @@ namespace SharePointPnP.PowerShell.Commands.Model
             {
                 this.emailAttestationReAuthDays = 30;
             }
+#endif
+            this.storageQuota = tenant.StorageQuota;
+            this.storageQuotaAllocated = tenant.StorageQuotaAllocated;
+            this.resourceQuota = tenant.ResourceQuota;
+            this.resourceQuotaAllocated = tenant.ResourceQuotaAllocated;
+            this.compatibilityRange = tenant.CompatibilityRange;
+            this.externalServicesEnabled = tenant.ExternalServicesEnabled;
+            this.noAccessRedirectUrl = tenant.NoAccessRedirectUrl;
+            this.sharingCapability = tenant.SharingCapability;
+            this.displayStartASiteOption = tenant.DisplayStartASiteOption;
+            this.startASiteFormUrl = tenant.StartASiteFormUrl;
         }
 
         public bool HideDefaultThemes => hideDefaultThemes;
@@ -397,7 +398,9 @@ namespace SharePointPnP.PowerShell.Commands.Model
 
         public string PublicCdnAllowedFileTypes => publicCdnAllowedFileTypes;
 
+#if !ONPREMISES
         public IList<SPOPublicCdnOrigin> PublicCdnOrigins => publicCdnOrigins;
+#endif
 
         public int RequireAnonymousLinksExpireInDays => requireAnonymousLinksExpireInDays;
 
@@ -405,7 +408,9 @@ namespace SharePointPnP.PowerShell.Commands.Model
 
         public string SharingBlockedDomainList => sharingBlockedDomainList;
 
+#if !ONPREMISES
         public SharingDomainRestrictionModes SharingDomainRestrictionMode => sharingDomainRestrictionMode;
+#endif
 
         public bool OneDriveForGuestsEnabled => oneDriveForGuestsEnabled;
 
@@ -417,19 +422,22 @@ namespace SharePointPnP.PowerShell.Commands.Model
 
         public bool UseFindPeopleInPeoplePicker => useFindPeopleInPeoplePicker;
 
+#if !ONPREMISES
         public SharingLinkType DefaultSharingLinkType => defaultSharingLinkType;
 
         public SharingState ODBMembersCanShare => odbMembersCanShare;
 
         public SharingState ODBAccessRequests => odbAccessRequests;
-
+#endif
         public bool PreventExternalUsersFromResharing => preventExternalUsersFromResharing;
 
         public bool ShowPeoplePickerSuggestionsForGuestUsers => showPeoplePickerSuggestionsForGuestUsers;
 
+#if !ONPREMISES
         public AnonymousLinkType FileAnonymousLinkType => fileAnonymousLinkType;
 
         public AnonymousLinkType FolderAnonymousLinkType => folderAnonymousLinkType;
+#endif
 
         public bool NotifyOwnersWhenItemsReshared => notifyOwnersWhenItemsReshared;
 
@@ -439,7 +447,9 @@ namespace SharePointPnP.PowerShell.Commands.Model
 
         public bool NotificationsInSharePointEnabled => notificationsInSharePointEnabled;
 
+#if !ONPREMISES
         public SpecialCharactersState SpecialCharactersStateInFileFolderNames => specialCharactersStateInFileFolderNames;
+#endif
 
         public bool OwnerAnonymousNotification => ownerAnonymousNotification;
 
@@ -453,9 +463,11 @@ namespace SharePointPnP.PowerShell.Commands.Model
 
         public bool DisallowInfectedFileDownload => disallowInfectedFileDownload;
 
+#if !ONPREMISES
         public SharingPermissionType DefaultLinkPermission => defaultLinkPermission;
 
         public SPOConditionalAccessPolicyType ConditionalAccessPolicy => conditionalAccessPolicy;
+#endif
 
         public bool AllowDownloadingNonWebViewableFiles => allowDownloadingNonWebViewableFiles;
 
@@ -527,7 +539,9 @@ namespace SharePointPnP.PowerShell.Commands.Model
 
         private string publicCdnAllowedFileTypes;
 
+#if !ONPREMISES
         private IList<SPOPublicCdnOrigin> publicCdnOrigins;
+#endif
 
         private int requireAnonymousLinksExpireInDays;
 
@@ -535,7 +549,9 @@ namespace SharePointPnP.PowerShell.Commands.Model
 
         private string sharingBlockedDomainList;
 
+#if !ONPREMISES
         private SharingDomainRestrictionModes sharingDomainRestrictionMode;
+#endif
 
         private bool oneDriveForGuestsEnabled;
 
@@ -547,20 +563,22 @@ namespace SharePointPnP.PowerShell.Commands.Model
 
         private bool useFindPeopleInPeoplePicker;
 
+#if !ONPREMISES
         private SharingLinkType defaultSharingLinkType;
 
         private SharingState odbMembersCanShare;
 
         private SharingState odbAccessRequests;
-
+#endif
         private bool preventExternalUsersFromResharing;
 
         private bool showPeoplePickerSuggestionsForGuestUsers;
 
+#if !ONPREMISES
         private AnonymousLinkType fileAnonymousLinkType;
 
         private AnonymousLinkType folderAnonymousLinkType;
-
+#endif
         private bool notifyOwnersWhenItemsReshared;
 
         private bool notifyOwnersWhenInvitationsAccepted;
@@ -569,7 +587,9 @@ namespace SharePointPnP.PowerShell.Commands.Model
 
         private bool notificationsInSharePointEnabled;
 
+#if !ONPREMISES
         private SpecialCharactersState specialCharactersStateInFileFolderNames;
+#endif
 
         private bool ownerAnonymousNotification;
 
@@ -583,9 +603,11 @@ namespace SharePointPnP.PowerShell.Commands.Model
 
         private bool disallowInfectedFileDownload;
 
+#if !ONPREMISES
         private SharingPermissionType defaultLinkPermission;
 
         private SPOConditionalAccessPolicyType conditionalAccessPolicy;
+#endif
 
         private bool allowDownloadingNonWebViewableFiles = true;
 
@@ -602,4 +624,3 @@ namespace SharePointPnP.PowerShell.Commands.Model
         private Guid[] disabledWebPartIds;
     }
 }
-#endif
