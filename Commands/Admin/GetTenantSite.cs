@@ -1,5 +1,4 @@
-﻿#if !ONPREMISES
-using System;
+﻿using System;
 using System.Linq;
 using System.Management.Automation;
 using Microsoft.Online.SharePoint.TenantAdministration;
@@ -17,25 +16,34 @@ namespace SharePointPnP.PowerShell.Commands
         SupportedPlatform = CmdletSupportedPlatform.Online,
         OutputType = typeof(Microsoft.Online.SharePoint.TenantAdministration.SiteProperties),
         OutputTypeLink = "https://msdn.microsoft.com/en-us/library/microsoft.online.sharepoint.tenantadministration.siteproperties.aspx")]
+#if !ONPREMISES
     [CmdletExample(Code = @"PS:> Get-PnPTenantSite", Remarks = "Returns all site collections", SortOrder = 1)]
+#endif
     [CmdletExample(Code = @"PS:> Get-PnPTenantSite -Url http://tenant.sharepoint.com/sites/projects", Remarks = "Returns information about the project site", SortOrder = 2)]
+#if !ONPREMISES
     [CmdletExample(Code = @"PS:> Get-PnPTenantSite -Detailed", Remarks = "Returns all sites with the full details of these sites", SortOrder = 3)]
     [CmdletExample(Code = @"PS:> Get-PnPTenantSite -IncludeOneDriveSites", Remarks = "Returns all sites including all OneDrive for Business sites", SortOrder = 4)]
     [CmdletExample(Code = @"PS:> Get-PnPTenantSite -IncludeOneDriveSites -Filter ""Url -like '-my.sharepoint.com/personal/'""", Remarks = "Returns all OneDrive for Business sites", SortOrder = 5)]
     [CmdletExample(Code = @"PS:> Get-PnPTenantSite -Template SITEPAGEPUBLISHING#0", Remarks = "Returns all Communication sites", SortOrder = 6)]
     [CmdletExample(Code = @"PS:> Get-PnPTenantSite -Filter ""Url -like 'sales'"" ", Remarks = "Returns all sites including 'sales' in the url", SortOrder = 7)]
+#endif
     public class GetTenantSite : PnPAdminCmdlet
     {
+#if !ONPREMISES
         [Parameter(Mandatory = false, HelpMessage = "The URL of the site", Position = 0, ValueFromPipeline = true)]
+#else
+        [Parameter(Mandatory = true, HelpMessage = "The URL of the site", Position = 0, ValueFromPipeline = true)]
+#endif
         [Alias("Identity")]
         public string Url;
-
+#if !ONPREMISES
         [Parameter(Mandatory = false, HelpMessage = @"By default, all sites will be returned. Specify a template value alike ""STS#0"" here to filter on the template")]
         public string Template;
-
+#endif
         [Parameter(Mandatory = false, HelpMessage = "By default, not all returned attributes are populated. This switch populates all attributes. It can take several seconds to run. Without this, some attributes will show default values that may not be correct.")]
         public SwitchParameter Detailed;
 
+#if !ONPREMISES
         [Parameter(Mandatory = false, HelpMessage = "By default, the OneDrives are not returned. This switch includes all OneDrives.")]
         public SwitchParameter IncludeOneDriveSites;
 
@@ -49,7 +57,7 @@ namespace SharePointPnP.PowerShell.Commands
 
         [Parameter(Mandatory = false, HelpMessage = "Specifies the script block of the server-side filter to apply. See https://technet.microsoft.com/en-us/library/fp161380.aspx")]
         public string Filter;
-
+#endif
         protected override void ExecuteCmdlet()
         {
             if (SPOnlineConnection.CurrentConnection.ConnectionType == ConnectionType.OnPrem)
@@ -58,6 +66,12 @@ namespace SharePointPnP.PowerShell.Commands
             }
             else
             {
+#if ONPREMISES
+                var list = Tenant.GetSitePropertiesByUrl(Url, Detailed);
+                list.Context.Load(list);
+                list.Context.ExecuteQueryRetry();
+                WriteObject(list, true);
+#else
                 if (!string.IsNullOrEmpty(Url))
                 {
                     var list = Tenant.GetSitePropertiesByUrl(Url, Detailed);
@@ -97,8 +111,8 @@ namespace SharePointPnP.PowerShell.Commands
                         WriteObject(sites.OrderBy(x => x.Url), true);
                     }
                 }
+#endif
             }
         }
     }
 }
-#endif

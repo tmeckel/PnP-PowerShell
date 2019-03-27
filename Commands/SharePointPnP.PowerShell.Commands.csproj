@@ -583,6 +583,7 @@
     <Compile Include="Base\InvokeSPRestMethod.cs" />
     <Compile Include="Admin\RemoveHomeSite.cs" />
     <Compile Include="Admin\SetHomeSite.cs" />
+    <Compile Include="Admin\GetTenantDeletedSite.cs" />
     <Compile Include="Apps\DenyTenantServicePrincipalPermissionRequest.cs" />
     <Compile Include="Apps\DisableTenantServicePrincipal.cs" />
     <Compile Include="Apps\GrantTenantServicePrincipalPermission.cs" />
@@ -1183,6 +1184,6 @@
   </Target>
   <Target Name="AfterBuild">
     <Exec Command="&quot;$(SolutionDir)ModuleFilesGenerator\bin\$(ConfigurationName)\SharePointPnP.PowerShell.ModuleFilesGenerator.exe&quot; &quot;$(TargetPath)&quot; &quot;$(ConfigurationName)&quot; &quot;$(SolutionDir)" />
-    <Exec Command="powershell.exe -ExecutionPolicy bypass -NoLogo -NonInteractive -Command .'$(SolutionDir)PostBuild.ps1' -ProjectDir:'$(ProjectDir)' -ConfigurationName:'$(ConfigurationName)' -TargetDir:'$(TargetDir)' -TargetFileName:'$(TargetFileName)' -TargetName:'$(TargetName)' -SolutionDir:'$(SolutionDir)'" />
+    <Exec Command="powershell.exe -ExecutionPolicy bypass -NoLogo -NonInteractive -Command .'$(SolutionDir)PostBuild.ps1' -ProjectDir:'$(ProjectDir)' -ConfigurationName:'$(ConfigurationName)' -TargetDir:'$(TargetDir)' -TargetFileName:'$(TargetFileName)' -TargetName:'$(TargetName)' -SolutionDir:'$(SolutionDir)' -DestinationFolder:'$(DestinationFolder)'" />
   </Target>
 </Project>

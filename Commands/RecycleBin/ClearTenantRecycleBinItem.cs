@@ -1,5 +1,4 @@
-﻿#if !ONPREMISES
-using System;
+﻿using System;
 using System.Management.Automation;
 using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core;
@@ -10,8 +9,8 @@ using Resources = SharePointPnP.PowerShell.Commands.Properties.Resources;
 namespace SharePointPnP.PowerShell.Commands.RecycleBin
 {
     [Cmdlet(VerbsCommon.Clear, "PnPTenantRecycleBinItem")]
-    [CmdletHelp("Permanently deletes a site collection from the tenant scoped recycle bin", 
-        DetailedDescription = @"The Clear-PnPTenantRecycleBinItem cmdlet allows a site collection that has been deleted and still exists in the tenant recycle bin to be permanently deleted from the recycle bin as well.", 
+    [CmdletHelp("Permanently deletes a site collection from the tenant scoped recycle bin",
+        DetailedDescription = @"The Clear-PnPTenantRecycleBinItem cmdlet allows a site collection that has been deleted and still exists in the tenant recycle bin to be permanently deleted from the recycle bin as well.",
         Category = CmdletHelpCategory.TenantAdmin)]
     [CmdletExample(
         Code = @"PS:> Clear-PnPTenantRecycleBinItem -Url https://tenant.sharepoint.com/sites/contoso",
@@ -50,4 +49,3 @@ namespace SharePointPnP.PowerShell.Commands.RecycleBin
         }
     }
 }
-#endif
