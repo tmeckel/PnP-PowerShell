@@ -1,4 +1,3 @@
-﻿#if !ONPREMISES
 using Microsoft.Online.SharePoint.TenantAdministration;
 using Microsoft.SharePoint.Client;
 using SharePointPnP.PowerShell.CmdletHelpAttributes;
@@ -15,10 +14,10 @@ namespace SharePointPnP.PowerShell.Commands.Admin
 ResourceQuotaAllocated, and SiteCreationMode.
 
 You must be a SharePoint Online global administrator to run the cmdlet.",
-        SupportedPlatform = CmdletSupportedPlatform.Online,
+        SupportedPlatform = CmdletSupportedPlatform.All,
         Category = CmdletHelpCategory.TenantAdmin)]
     [CmdletExample(
-        Code = @"PS:> Set-PnPTenantSite -Identity https://contoso.sharepoint.com/sites/team1 -LockState NoAccess
+        Code = @"PS:> Set-PnPTenant -Identity https://contoso.sharepoint.com/sites/team1 -LockState NoAccess
 Set-PnPTenant -NoAccessRedirectUrl 'http://www.contoso.com'",
         Remarks = @"This example blocks access to https://contoso.sharepoint.com/sites/team1 and redirects traffic to http://www.contoso.com.", SortOrder = 1)]
     [CmdletExample(
@@ -55,6 +54,7 @@ The valid values are:
 Full URL - Example: https://contoso.sharepoint.com/Pages/Locked.aspx")]
         public string NoAccessRedirectUrl;
 
+#if !ONPREMISES
         [Parameter(Mandatory = false, HelpMessage = @"Determines what level of sharing is available for the site.
 
 The valid values are:
@@ -316,7 +316,6 @@ Unspecified- Let each OneDrive for Business owner enable or disable access reque
 
         [Parameter(Mandatory = false)]
         public AnonymousLinkType? FileAnonymousLinkType;
-
         [Parameter(Mandatory = false)]
         public AnonymousLinkType? FolderAnonymousLinkType;
 
@@ -401,6 +400,7 @@ Accepts a value of true (enabled) to hide the Download button or false (disabled
 
         [Parameter(Mandatory = false, HelpMessage = "Defines if the default themes are visible or hidden")]
         public bool? HideDefaultThemes;
+#endif
 
         [Parameter(Mandatory = false, HelpMessage = "Guids of out of the box modern web part id's to hide")]
         public Guid[] DisabledWebPartIds;
@@ -431,6 +431,7 @@ Accepts a value of true (enabled) to hide the Download button or false (disabled
                 Tenant.ExternalServicesEnabled = ExternalServicesEnabled.Value;
                 isDirty = true;
             }
+#if !ONPREMISES
             if (DisplayStartASiteOption.HasValue)
             {
                 Tenant.DisplayStartASiteOption = DisplayStartASiteOption.Value;
@@ -966,6 +967,7 @@ Accepts a value of true (enabled) to hide the Download button or false (disabled
                 Tenant.DisabledWebPartIds = DisabledWebPartIds;
                 isDirty = true;
             }
+#endif
             if (isDirty)
             {
                 ClientContext.ExecuteQueryRetry();
@@ -973,4 +975,3 @@ Accepts a value of true (enabled) to hide the Download button or false (disabled
         }
     }
 }
-#endif

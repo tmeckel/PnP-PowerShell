@@ -1,4 +1,3 @@
-﻿#if !ONPREMISES
 using System;
 using System.Management.Automation;
 using Microsoft.Online.SharePoint.TenantManagement;
@@ -18,7 +17,7 @@ namespace SharePointPnP.PowerShell.Commands
     [Cmdlet(VerbsCommon.Set, "PnPTenantSite")]
     [CmdletHelp(@"Set site information.",
         "Sets site properties for existing sites.",
-        SupportedPlatform = CmdletSupportedPlatform.Online,
+        SupportedPlatform = CmdletSupportedPlatform.All,
         Category = CmdletHelpCategory.TenantAdmin)]
     [CmdletExample(
       Code = @"PS:> Set-PnPTenantSite -Url https://contoso.sharepoint.com -Title ""Contoso Website"" -Sharing Disabled",
@@ -46,6 +45,7 @@ namespace SharePointPnP.PowerShell.Commands
         [Parameter(Mandatory = false, HelpMessage = "Specifies the title of the site", ParameterSetName = ParameterSet_PROPERTIES)]
         public string Title;
 
+#if !ONPREMISES
         [Parameter(Mandatory = false, HelpMessage = "Specifies what the sharing capabilities are for the site. Possible values: Disabled, ExternalUserSharingOnly, ExternalUserAndGuestSharing, ExistingExternalUserSharingOnly", ParameterSetName = ParameterSet_PROPERTIES)]
         [Alias("Sharing")]
         public SharingCapabilities SharingCapability;
@@ -80,6 +80,9 @@ namespace SharePointPnP.PowerShell.Commands
         [Parameter(Mandatory = false, HelpMessage = "Sets the lockstate of a site", ParameterSetName = ParameterSet_LOCKSTATE)]
         public SiteLockState? LockState;
 
+        [Parameter(Mandatory = false, HelpMessage = "Specifies if a site allows custom script or not. See https://support.office.com/en-us/article/Turn-scripting-capabilities-on-or-off-1f2c515f-5d7e-448a-9fd7-835da935584f for more information.", ParameterSetName = ParameterSet_PROPERTIES)]
+        public SwitchParameter? NoScriptSite;
+
         [Parameter(Mandatory = false, HelpMessage = @"Specifies the default link permission for the site collection. None - Respect the organization default link permission. View - Sets the default link permission for the site to ""view"" permissions. Edit - Sets the default link permission for the site to ""edit"" permissions", ParameterSetName = ParameterSet_PROPERTIES)]
         public SharingPermissionType DefaultLinkPermission;
 
@@ -109,6 +112,8 @@ namespace SharePointPnP.PowerShell.Commands
 
         [Parameter(Mandatory = false, HelpMessage = @"-", ParameterSetName = ParameterSet_PROPERTIES)]
         public FlowsPolicy DisableFlows;
+        public SharingLinkType? DefaultSharingLinkType;
+#endif
 
         [Parameter(Mandatory = false, HelpMessage = "Wait for the operation to complete")]
         public SwitchParameter Wait;
@@ -236,6 +241,22 @@ namespace SharePointPnP.PowerShell.Commands
                         WaitForIsComplete(ClientContext, op, timeoutFunction, TenantOperationMessage.SettingSiteProperties);
                     }
                 }
+                Tenant.SetSiteProperties(Url, title: Title,
+#if !ONPREMISES
+                    sharingCapability: Sharing,
+#endif
+                    storageMaximumLevel: StorageMaximumLevel,
+                    storageWarningLevel: StorageWarningLevel,
+                    allowSelfServiceUpgrade: AllowSelfServiceUpgrade,
+                    userCodeMaximumLevel: UserCodeMaximumLevel,
+                    userCodeWarningLevel: UserCodeWarningLevel,
+                    noScriptSite: NoScriptSite,
+#if !ONPREMISES
+                    defaultLinkPermission: DefaultLinkPermission,
+                    defaultSharingLinkType: DefaultSharingLinkType,
+#endif
+                    wait: Wait, timeoutFunction: Wait ? timeoutFunction : null
+                    );
 
                 if (Owners != null && Owners.Count > 0)
                 {
@@ -295,4 +316,3 @@ namespace SharePointPnP.PowerShell.Commands
 
     }
 }
-#endif

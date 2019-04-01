@@ -13,7 +13,7 @@ namespace SharePointPnP.PowerShell.Commands
     [Cmdlet(VerbsCommon.Get, "PnPTenantSite", SupportsShouldProcess = true)]
     [CmdletHelp(@"Retrieve site information.", "Use this cmdlet to retrieve site information from your tenant administration.",
         Category = CmdletHelpCategory.TenantAdmin,
-        SupportedPlatform = CmdletSupportedPlatform.Online,
+        SupportedPlatform = CmdletSupportedPlatform.All,
         OutputType = typeof(Microsoft.Online.SharePoint.TenantAdministration.SiteProperties),
         OutputTypeLink = "https://msdn.microsoft.com/en-us/library/microsoft.online.sharepoint.tenantadministration.siteproperties.aspx")]
 #if !ONPREMISES

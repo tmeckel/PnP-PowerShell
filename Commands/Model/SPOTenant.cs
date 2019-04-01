@@ -335,7 +335,7 @@ namespace SharePointPnP.PowerShell.Commands.Model
             this.noAccessRedirectUrl = tenant.NoAccessRedirectUrl;
             this.resourceQuota = tenant.ResourceQuota;
             this.resourceQuotaAllocated = tenant.ResourceQuotaAllocated;
-            // this.rootSiteUrl = tenant.RootSiteUrl
+            this.rootSiteUrl = tenant.RootSiteUrl;
             this.storageQuota = tenant.StorageQuota;
             this.storageQuotaAllocated = tenant.StorageQuotaAllocated;
 #if !ONPREMISES
@@ -352,6 +352,8 @@ namespace SharePointPnP.PowerShell.Commands.Model
         public long StorageQuota => storageQuota;
 
         public long StorageQuotaAllocated => storageQuotaAllocated;
+
+        public string RootSiteUrl => rootSiteUrl;
 
         public double ResourceQuota => resourceQuota;
 
@@ -491,6 +493,8 @@ namespace SharePointPnP.PowerShell.Commands.Model
         private double resourceQuota;
 
         private double resourceQuotaAllocated;
+
+        private string rootSiteUrl;
 
 #if !ONPREMISES
         private long oneDriveStorageQuota;

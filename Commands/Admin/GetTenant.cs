@@ -20,7 +20,7 @@ ResourceQuotaAllocated, and SiteCreationMode.
 Currently, there are no parameters for this cmdlet.
 
 You must be a SharePoint Online global administrator to run the cmdlet.",
-        SupportedPlatform = CmdletSupportedPlatform.Online,
+        SupportedPlatform = CmdletSupportedPlatform.All,
         Category = CmdletHelpCategory.TenantAdmin)]
     [CmdletExample(
         Code = @"PS:> Get-PnPTenant",

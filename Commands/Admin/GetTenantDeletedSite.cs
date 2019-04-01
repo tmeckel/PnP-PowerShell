@@ -13,7 +13,7 @@ namespace SharePointPnP.PowerShell.Commands
     [Cmdlet(VerbsCommon.Get, "PnPTenantDeletedSite", SupportsShouldProcess = true)]
     [CmdletHelp(@"Retrieve site information for a deleted site.", "Use this cmdlet to retrieve information about a deleted site from your tenant administration.",
         Category = CmdletHelpCategory.TenantAdmin,
-        SupportedPlatform = CmdletSupportedPlatform.Online,
+        SupportedPlatform = CmdletSupportedPlatform.All,
         OutputType = typeof(Microsoft.Online.SharePoint.TenantAdministration.DeletedSiteProperties),
         OutputTypeLink = "https://msdn.microsoft.com/en-us/library/microsoft.online.sharepoint.tenantadministration.siteproperties.aspx")]
 #if !ONPREMISES
