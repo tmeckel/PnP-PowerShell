@@ -30,6 +30,11 @@ namespace SharePointPnP.PowerShell.Commands
         [Alias("Identity")]
         public string Url;
 
+#if !ONPREMISES
+        [Parameter(Mandatory = false, HelpMessage = "Get detailed site information", Position = 1)]
+        public SwitchParameter Detailed;
+#endif
+
         protected override void ExecuteCmdlet()
         {
             if (SPOnlineConnection.CurrentConnection.ConnectionType == ConnectionType.OnPrem)
