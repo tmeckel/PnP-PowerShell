@@ -33,7 +33,6 @@ namespace SharePointPnP.PowerShell.Commands
 
         [Parameter(Mandatory = false)]
         public SPVariantThemeType HeaderEmphasis = SPVariantThemeType.None;
-
 #endif
 
         protected override void ExecuteCmdlet()
