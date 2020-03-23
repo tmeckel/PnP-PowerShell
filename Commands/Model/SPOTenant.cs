@@ -617,6 +617,7 @@ namespace SharePointPnP.PowerShell.Commands.Model
 
         private int emailAttestationReAuthDays;
 
-        private Guid[] disabledWebPartIds;
-    }
+        private Guid[] disabledWebPartIds;        
+#endif
+    }    
 }
